@@ -1,0 +1,20 @@
+import argparse
+
+#создаём парсер и описываем параметры
+p = argparse.ArgumentParser()
+p.add_argument("--package", required=True)
+p.add_argument("--repo", required=True)
+args = p.parse_args()
+
+#выводим параметры
+print("Параметры запуска:")
+print("package =", args.package)
+print("repo =", args.repo)
+
+#сохраняем параметры в файл
+with open("result.txt", "w", encoding="utf-8") as f:
+    f.write("Параметры запуска:\n")
+    f.write(f"package = {args.package}\n")
+    f.write(f"repo = {args.repo}\n")
+
+print("\nРезультаты сохранены в result.txt")
