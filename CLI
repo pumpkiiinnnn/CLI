@@ -4,12 +4,18 @@ import argparse
 p = argparse.ArgumentParser()
 p.add_argument("--package", required=True)
 p.add_argument("--repo", required=True)
+p.add_argument("--mode", required=True)
+p.add_argument("--output", required=True)
+p.add_argument("--filter", required=True)
 args = p.parse_args()
 
 #выводим параметры
 print("Параметры запуска:")
 print("package =", args.package)
 print("repo =", args.repo)
+print("mode =", args.mode)
+print("output =", args.output)
+print("filter =", args.filter)
 
 #сохраняем параметры в файл
 with open("result.txt", "w", encoding="utf-8") as f:
