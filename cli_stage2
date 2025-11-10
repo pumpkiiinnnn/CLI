@@ -1,0 +1,51 @@
+import gzip
+import sys
+import urllib.request
+
+def download_packages_file(url):
+    #Скачать и распаковать Packages.gz
+    response = urllib.request.urlopen(url)
+    data = gzip.decompress(response.read()).decode('utf-8')
+    return data
+
+def extract_dependencies(packages_text, package_name): #1. весь текст 2. имя пакета, который нам нужен
+    #извлекаем прямые зависимости заданного пакета
+    packages = packages_text.split('\n\n')  # разделяем пакеты
+    for pkg in packages:
+        lines = pkg.splitlines()
+        name = None # для имени пакета
+        depends = None #для строки зависимостей
+        for line in lines:
+            if line.startswith('Package: '):
+                name = line[len('Package: '):]
+            if line.startswith('Depends: '):
+                depends = line[len('Depends: '):]
+        if name == package_name:
+            if depends:
+                # берем только имена пакетов, игнорируя версии и альтернативы
+                deps = [d.strip().split(' ')[0] for d in depends.split(',')] # разделяем и убираем мусор
+                return deps
+            else:
+                return []
+    return None  # пакет не найден
+
+if __name__ == "__main__":
+    if len(sys.argv) != 3:
+        print("Использование: python cli_stage2.py <имя_пакета> <URL_Packages.gz>")
+        sys.exit(1)
+
+    package_name = sys.argv[1]
+    url = sys.argv[2]
+
+    print(f"Скачиваем {url}...")
+    packages_text = download_packages_file(url)
+
+    deps = extract_dependencies(packages_text, package_name)
+    if deps is None:
+        print(f"Пакет {package_name} не найден.")
+    elif not deps:
+        print(f"Пакет {package_name} не имеет прямых зависимостей.")
+    else:
+        print(f"Прямые зависимости пакета {package_name}:")
+        for d in deps:
+            print(f" - {d}")
