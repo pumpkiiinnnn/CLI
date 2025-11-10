@@ -1,0 +1,3 @@
+Параметры запуска:
+package = nano
+repo = ./repo
