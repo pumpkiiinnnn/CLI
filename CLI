@@ -18,3 +18,7 @@ with open("result.txt", "w", encoding="utf-8") as f:
     f.write(f"repo = {args.repo}\n")
 
 print("\nРезультаты сохранены в result.txt")
+
+
+#пример ввода: python cli_stage2.py nano http://archive.ubuntu.com/ubuntu/dists/jammy/main/binary-amd64/Packages.gz
+#python CLI.py --package nano --repo ./repo
